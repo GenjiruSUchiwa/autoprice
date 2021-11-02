@@ -11,7 +11,7 @@ import {
 import React from "react";
 
 function TablesTableRow(props) {
-  const { logo, name, email, subdomain, domain, status, date } = props;
+  const { logo, name, provider, status, quantity } = props;
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
@@ -30,9 +30,6 @@ function TablesTableRow(props) {
             >
               {name}
             </Text>
-            <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {email}
-            </Text>
           </Flex>
         </Flex>
       </Td>
@@ -40,17 +37,14 @@ function TablesTableRow(props) {
       <Td>
         <Flex direction="column">
           <Text fontSize="md" color={textColor} fontWeight="bold">
-            {domain}
-          </Text>
-          <Text fontSize="sm" color="gray.400" fontWeight="normal">
-            {subdomain}
+            {provider}
           </Text>
         </Flex>
       </Td>
       <Td>
         <Badge
-          bg={status === "Online" ? "green.400" : bgStatus}
-          color={status === "Online" ? "white" : colorStatus}
+          bg={status === "In Stock" ? "green.400" : bgStatus}
+          color={status === "In Stock" ? "white" : colorStatus}
           fontSize="16px"
           p="3px 10px"
           borderRadius="8px"
@@ -60,7 +54,7 @@ function TablesTableRow(props) {
       </Td>
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {date}
+          {quantity}
         </Text>
       </Td>
       <Td>

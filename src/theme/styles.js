@@ -1,6 +1,8 @@
 import { mode } from "@chakra-ui/theme-tools";
 
 export const globalStyles = {
+  initialColorMode: "light",
+  useSystemColorMode: false,
   colors: {
     gray: {
       700: "#1f2733",

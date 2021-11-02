@@ -6,27 +6,59 @@ import {
   Tbody,
   Text,
   Th,
+  Button,
+  Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
   Thead,
   Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
+  useDisclosure,
+  useColorModeValue, Stat, StatLabel, StatNumber, StatHelpText, Spacer, SimpleGrid,
+} from '@chakra-ui/react';
 // Custom components
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import TablesProjectRow from "components/Tables/TablesProjectRow";
 import TablesTableRow from "components/Tables/TablesTableRow";
-import { tablesProjectData, tablesTableData } from "variables/general";
-
+import { tablesTableData } from "variables/general";
+import IconBox from '../../components/Icons/IconBox';
+import { CartIcon, DocumentIcon, GlobeIcon, WalletIcon } from '../../components/Icons/Icons';
 function Tables() {
+  const iconTeal = useColorModeValue("teal.300", "teal.300");
   const textColor = useColorModeValue("gray.700", "white");
+  const iconBoxInside = useColorModeValue("white", "white");
+  const initialRef = React.useRef()
+  const finalRef = React.useRef()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const addProductModal = () => {
+      alert("Modal is show")
+  }
 
   return (
+    <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+      <Flex py="1rem" px="1rem">
+        <Button colorScheme="teal" size="lg" onClick={onOpen}>
+         Add product
+        </Button>
+        <Spacer />
+      </Flex>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            Authors Table
+            Products Inventory
           </Text>
         </CardHeader>
         <CardBody>
@@ -34,11 +66,11 @@ function Tables() {
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 <Th pl="0px" color="gray.400">
-                  Author
+                  Name
                 </Th>
-                <Th color="gray.400">Function</Th>
-                <Th color="gray.400">Status</Th>
-                <Th color="gray.400">Employed</Th>
+                <Th color="gray.400">Provider</Th>
+                <Th color="gray.400">Available</Th>
+                <Th color="gray.400">Quantity</Th>
                 <Th></Th>
               </Tr>
             </Thead>
@@ -47,52 +79,9 @@ function Tables() {
                 return (
                   <TablesTableRow
                     name={row.name}
-                    logo={row.logo}
-                    email={row.email}
-                    subdomain={row.subdomain}
-                    domain={row.domain}
+                    provider={row.provider}
                     status={row.status}
-                    date={row.date}
-                  />
-                );
-              })}
-            </Tbody>
-          </Table>
-        </CardBody>
-      </Card>
-      <Card
-        my="22px"
-        overflowX={{ sm: "scroll", xl: "hidden" }}
-      >
-        <CardHeader p="6px 0px 22px 0px">
-          <Flex direction="column">
-            <Text fontSize="lg" color={textColor} fontWeight="bold" pb=".5rem">
-              Projects Table
-            </Text>
-          </Flex>
-        </CardHeader>
-        <CardBody>
-          <Table variant="simple" color={textColor}>
-            <Thead>
-              <Tr my=".8rem" pl="0px">
-                <Th pl="0px" color="gray.400">
-                  Companies
-                </Th>
-                <Th color="gray.400">Budget</Th>
-                <Th color="gray.400">Status</Th>
-                <Th color="gray.400">Completion</Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {tablesProjectData.map((row) => {
-                return (
-                  <TablesProjectRow
-                    name={row.name}
-                    logo={row.logo}
-                    status={row.status}
-                    budget={row.budget}
-                    progression={row.progression}
+                    quantity={row.quantity}
                   />
                 );
               })}
@@ -101,6 +90,39 @@ function Tables() {
         </CardBody>
       </Card>
     </Flex>
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add product in inventory</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Nom</FormLabel>
+              <Input ref={initialRef} placeholder="Name" />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Provider</FormLabel>
+              <Input placeholder="Provider" />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Quantity</FormLabel>
+              <Input placeholder="Quantity" type={"number"} />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Save
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
 

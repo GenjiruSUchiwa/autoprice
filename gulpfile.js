@@ -28,7 +28,7 @@ gulp.task("licenses", async function () {
 
   // this is to add Creative Tim licenses in the production mode for the minified html
   gulp
-    .src("build/index.html", { base: "./" })
+    .src("build/index.js", { base: "./" })
     .pipe(
       gap.prependText(`<!--
       /*!
