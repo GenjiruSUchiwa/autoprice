@@ -24,21 +24,29 @@ import PropTypes from "prop-types";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
+// FUNCTIONS
+
 function Sidebar(props) {
+  // to check for active links and opened collapses
   let location = useLocation();
+  // this is for the rest of the collapses
   const [state, setState] = React.useState({});
   const mainPanel = React.useRef();
   let variantChange = "0.2s linear";
+  // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
+  // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes) => {
     const { sidebarVariant } = props;
+    // Chakra Color Mode
     let activeBg = useColorModeValue("white", "gray.700");
     let inactiveBg = useColorModeValue("white", "gray.700");
     let activeColor = useColorModeValue("gray.700", "white");
     let inactiveColor = useColorModeValue("gray.400", "gray.400");
     let sidebarActiveShadow = "0px 7px 11px rgba(0, 0, 0, 0.04)";
+    // Here are all the props that may change depending on sidebar's state.(Opaque or transparent)
     if (sidebarVariant === "opaque") {
       activeBg = "transparent";
       inactiveBg = useColorModeValue("gray.100", "gray.600");
@@ -69,7 +77,9 @@ function Sidebar(props) {
               }}
               py="12px"
             >
-              {prop.name}
+              {document.documentElement.dir === "rtl"
+                ? prop.rtlName
+                : prop.name}
             </Text>
             {createLinks(prop.views)}
           </>
@@ -124,7 +134,9 @@ function Sidebar(props) {
                   </IconBox>
                 )}
                 <Text color={activeColor} my="auto" fontSize="sm">
-                  {prop.name}
+                  {document.documentElement.dir === "rtl"
+                    ? prop.rtlName
+                    : prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -173,7 +185,9 @@ function Sidebar(props) {
                   </IconBox>
                 )}
                 <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {prop.name}
+                  {document.documentElement.dir === "rtl"
+                    ? prop.rtlName
+                    : prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -185,7 +199,8 @@ function Sidebar(props) {
   const { logoText, routes, sidebarVariant } = props;
 
   var links = <>{createLinks(routes)}</>;
-
+  //  BRAND
+  //  Chakra Color Mode
   const mainText = useColorModeValue("gray.700", "gray.200");
   let sidebarBg = "none";
   let sidebarRadius = "0px";
@@ -217,6 +232,7 @@ function Sidebar(props) {
     </Box>
   );
 
+  // SIDEBAR
   return (
     <Box ref={mainPanel}>
       <Box display={{ sm: "none", xl: "block" }} position="fixed">
@@ -248,15 +264,21 @@ function Sidebar(props) {
   );
 }
 
+// FUNCTIONS
 
 export function SidebarResponsive(props) {
+  // to check for active links and opened collapses
   let location = useLocation();
+  // this is for the rest of the collapses
   const [state, setState] = React.useState({});
   const mainPanel = React.useRef();
+  // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
+  // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes) => {
+    // Chakra Color Mode
     const activeBg = useColorModeValue("white", "gray.700");
     const inactiveBg = useColorModeValue("white", "gray.700");
     const activeColor = useColorModeValue("gray.700", "white");
@@ -284,7 +306,9 @@ export function SidebarResponsive(props) {
               }}
               py="12px"
             >
-              {prop.name}
+              {document.documentElement.dir === "rtl"
+                ? prop.rtlName
+                : prop.name}
             </Text>
             {createLinks(prop.views)}
           </>
@@ -336,7 +360,9 @@ export function SidebarResponsive(props) {
                   </IconBox>
                 )}
                 <Text color={activeColor} my="auto" fontSize="sm">
-                  {prop.name}
+                  {document.documentElement.dir === "rtl"
+                    ? prop.rtlName
+                    : prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -384,7 +410,9 @@ export function SidebarResponsive(props) {
                   </IconBox>
                 )}
                 <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {prop.name}
+                  {document.documentElement.dir === "rtl"
+                    ? prop.rtlName
+                    : prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -396,7 +424,8 @@ export function SidebarResponsive(props) {
   const { logoText, routes, ...rest } = props;
 
   var links = <>{createLinks(routes)}</>;
-
+  //  BRAND
+  //  Chakra Color Mode
   const mainText = useColorModeValue("gray.700", "gray.200");
   let hamburgerColor = useColorModeValue("gray.500", "gray.200");
   if (props.secondary === true) {
@@ -424,8 +453,10 @@ export function SidebarResponsive(props) {
     </Box>
   );
 
+  // SIDEBAR
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
+  // Color variables
   return (
     <Flex
       display={{ sm: "flex", xl: "none" }}
@@ -443,7 +474,7 @@ export function SidebarResponsive(props) {
       <Drawer
         isOpen={isOpen}
         onClose={onClose}
-        placement={"left"}
+        placement={document.documentElement.dir === "rtl" ? "right" : "left"}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />

@@ -15,8 +15,8 @@ function TransactionRow(props) {
             price[0] === "+"
               ? "green.400"
               : price[0] === "-"
-                ? "red.400"
-                : "gray.400"
+              ? "red.400"
+              : "gray.400"
           }
           border="1px solid"
           display="flex"
@@ -49,8 +49,8 @@ function TransactionRow(props) {
           price[0] === "+"
             ? "green.400"
             : price[0] === "-"
-              ? "red.400"
-              : { textColor }
+            ? "red.400"
+            : { textColor }
         }
       >
         <Text fontSize={{ sm: "md", md: "lg", lg: "md" }} fontWeight="bold">

@@ -26,9 +26,11 @@ export default function AuthNavbar(props) {
     setOpen(!open);
   };
   const { logo, logoText, secondary, ...rest } = props;
+  // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   };
+  // Chakra color mode
   let navbarIcon = useColorModeValue("gray.700", "gray.200");
   let mainText = useColorModeValue("gray.700", "gray.200");
   let navbarBg = useColorModeValue(

@@ -85,11 +85,11 @@ export const barChartOptions = {
 
 export const lineChartData = [
   {
-    name: "UCB",
+    name: "Mobile apps",
     data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
   },
   {
-    name: "SABC",
+    name: "Websites",
     data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
   },
 ];
