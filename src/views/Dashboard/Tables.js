@@ -1,4 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm, Controller } from 'react-hook-form';
 // Chakra imports
 import {
   Flex,
@@ -29,24 +32,45 @@ import {
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import TablesProjectRow from "components/Tables/TablesProjectRow";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import { tablesTableData } from "variables/general";
-import IconBox from '../../components/Icons/IconBox';
-import { CartIcon, DocumentIcon, GlobeIcon, WalletIcon } from '../../components/Icons/Icons';
+import { createProduct } from '../../redux/actions/products';
+
 function Tables() {
-  const iconTeal = useColorModeValue("teal.300", "teal.300");
   const textColor = useColorModeValue("gray.700", "white");
-  const iconBoxInside = useColorModeValue("white", "white");
   const initialRef = React.useRef()
   const finalRef = React.useRef()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const addProductModal = () => {
-      alert("Modal is show")
-  }
 
-  return (
+
+  const { register, errors, control, handleSubmit } = useForm();
+  const dispatch = useDispatch();
+  function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+  }
+    const onSubmit = data => {
+      try {
+        data._id = uuidv4()
+        dispatch(createProduct({ ...data }));
+        toast.success('Product!');
+        clearForm();
+      } catch (error) {
+        toast.error(error);
+      }
+
+    }
+    const listProduct = useSelector(state => state.products);
+    const { products, loading, error } = listProduct;
+
+  const clearForm = () => {
+      onClose();
+    };
+
+
+    return (
     <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Flex py="1rem" px="1rem">
@@ -75,16 +99,18 @@ function Tables() {
               </Tr>
             </Thead>
             <Tbody>
-              {tablesTableData.map((row) => {
+              { (products.length > 0 ?
+                (products.map((item) => {
                 return (
                   <TablesTableRow
-                    name={row.name}
-                    provider={row.provider}
-                    status={row.status}
-                    quantity={row.quantity}
+                    name={item.name}
+                    provider={item.provider}
+                    status={item.status}
+                    quantity={item.quantity}
+                    id={item._id}
                   />
                 );
-              })}
+              })) : 'Not Data')}
             </Tbody>
           </Table>
         </CardBody>
@@ -101,21 +127,48 @@ function Tables() {
           <ModalHeader>Add product in inventory</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
+            <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
             <FormControl>
               <FormLabel>Nom</FormLabel>
-              <Input ref={initialRef} placeholder="Name" />
+              <Input
+                name={"name"}
+                ref={register({
+                required: {
+                  value: true,
+                  message: 'This field is required.',
+                },
+              })
+                } required placeholder="Name" />
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Provider</FormLabel>
-              <Input placeholder="Provider" />
+              <Input
+                name="provider"
+                ref={register({
+                  required: {
+                    value: true,
+                    message: 'This field is required.',
+                  },
+                })}
+                placeholder="Provider"
+              />
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Quantity</FormLabel>
-              <Input placeholder="Quantity" type={"number"} />
+              <Input placeholder="Quantity"
+                     name={"quantity"}
+                     ref={register({
+                       required: {
+                         value: true,
+                         message: 'This field is required.',
+                       },
+                     })}
+                     type={"number"} />
             </FormControl>
+            </form>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button colorScheme="blue" onClick={() => handleSubmit(onSubmit)()} mr={3}>
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>
@@ -125,5 +178,6 @@ function Tables() {
     </>
   );
 }
+
 
 export default Tables;

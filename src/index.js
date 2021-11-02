@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-import { ColorModeScript, extendTheme } from '@chakra-ui/react';
 
+import { Provider } from 'react-redux';
+import store from './redux/store'
 
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
@@ -10,7 +11,7 @@ import RTLLayout from "layouts/RTL.js";
 
 
 ReactDOM.render(
-
+  <Provider store={store}>
   <HashRouter>
     <Switch>
       <Route path={`/auth`} component={AuthLayout} />
@@ -18,6 +19,7 @@ ReactDOM.render(
       <Route path={`/rtl`} component={RTLLayout} />
       <Redirect from={`/`} to="/admin/dashboard" />
     </Switch>
-  </HashRouter>,
+  </HashRouter>
+  </Provider>,
   document.getElementById("root")
 );

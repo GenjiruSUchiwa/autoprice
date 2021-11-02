@@ -9,12 +9,26 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
+import {deleteProduct} from '../../redux/actions/products';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function TablesTableRow(props) {
-  const { logo, name, provider, status, quantity } = props;
+  const { logo, name, provider, status, id, quantity } = props;
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
+  const dispatch = useDispatch();
+  const removeProduct = () => {
+    try {
+      if (window.confirm(`Are you sure? You can't undo this action afterwards.`)) {
+        dispatch(deleteProduct(id));
+        toast.success('item removed!');
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <Tr>
@@ -58,14 +72,14 @@ function TablesTableRow(props) {
         </Text>
       </Td>
       <Td>
-        <Button p="0px" bg="transparent" variant="no-hover">
+        <Button p="0px" onClick={()=> removeProduct(id)} bg="transparent" variant="no-hover">
           <Text
             fontSize="md"
-            color="gray.400"
+            color="red.300"
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            Delete
           </Text>
         </Button>
       </Td>
